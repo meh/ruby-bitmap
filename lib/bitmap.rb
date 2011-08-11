@@ -43,7 +43,7 @@ class Bitmap < Hash
       Value.new(args.first, args.first.to_s(2).reverse.chars.each_with_index.map {|bit, index|
         next if bit.to_i.zero?
 
-        index("#{bit}#{'0' * index}".to_i(2)) or raise ArgumentError, "unknown bit at #{index}"
+        key("#{bit}#{'0' * index}".to_i(2)) or raise ArgumentError, "unknown bit at #{index}"
       }.compact)
     else
       Value.new(args.map {|arg|
