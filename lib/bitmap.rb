@@ -28,6 +28,10 @@ class Bitmap < Hash
     def to_i
       @value
     end
+
+    def to_s
+      to_a.join(' | ')
+    end
   end
 
   def initialize (data)
