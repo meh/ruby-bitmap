@@ -26,4 +26,10 @@ describe Bitmap do
       (bits.all - :LOL).to_i.should == 0x03
     end
   end
+
+  describe '#has?' do
+    it 'works correctly' do
+      bits.all.has?(bits[:OMG, :WAT]).should == true
+    end
+  end
 end

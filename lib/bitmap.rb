@@ -20,8 +20,12 @@ class Bitmap < Hash
       @names  = names
     end
 
-    def has? (name)
-      @names.member?(name)
+    def has? (mask)
+      if mask.is_a?(Value)
+        (@names.to_a & mask.to_a) == mask.to_a
+      else
+        @names.member?(mask.to_s.to_sym)
+      end
     end
 
     def to_a
