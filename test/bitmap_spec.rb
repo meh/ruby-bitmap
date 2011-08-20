@@ -6,12 +6,24 @@ describe Bitmap do
   let(:bits) {
     Bitmap.new(
       :OMG => 0x01,
-      :WAT => 0x02
+      :WAT => 0x02,
+      :LOL => 0x04
     )
   }
 
-  it 'works correctly' do
+  it 'creates and handles bits correctly' do
     bits[:WAT, :OMG].to_i.should == 0x03
-    bits[:WAT, :OMG].to_a.should == [:WAT, :OMG]
+  end
+
+  describe '#+' do
+    it 'works correctly' do
+      (bits[:WAT] + :OMG).to_i.should == 0x03
+    end
+  end
+
+  describe '#-' do
+    it 'works correctly' do
+      (bits.all - :LOL).to_i.should == 0x03
+    end
   end
 end

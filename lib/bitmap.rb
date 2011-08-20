@@ -12,9 +12,12 @@
 
 class Bitmap < Hash
   class Value
-    def initialize (value, names)
-      @value = value.to_i
-      @names = names
+    attr_reader :bitmap
+
+    def initialize (bitmap, value, names)
+      @bitmap = bitmap
+      @value  = value.to_i
+      @names  = names
     end
 
     def has? (name)
@@ -25,12 +28,20 @@ class Bitmap < Hash
       @names
     end
 
+    def + (*what)
+      bitmap[*(@names + what.flatten.compact)]
+    end
+
+    def - (*what)
+      bitmap[*(@names - what.flatten.compact)]
+    end
+
     def to_i
       @value
     end
 
     def to_s
-      to_a.join(' | ')
+      to_a.join '|'
     end
   end
 
@@ -44,13 +55,13 @@ class Bitmap < Hash
     args.compact!
 
     if args.length == 1 && args.first.is_a?(Integer)
-      Value.new(args.first, args.first.to_s(2).reverse.chars.each_with_index.map {|bit, index|
+      Value.new(self, args.first, args.first.to_s(2).reverse.chars.each_with_index.map {|bit, index|
         next if bit.to_i.zero?
 
         key("#{bit}#{'0' * index}".to_i(2)) or raise ArgumentError, "unknown bit at #{index}"
       }.compact)
     else
-      Value.new(args.map {|arg|
+      Value.new(self, args.map {|arg|
         super(arg) or super(arg.to_s.to_sym) or raise ArgumentError, "unknown symbol #{arg}"
       }.inject {|a, b|
         a | b
@@ -59,7 +70,7 @@ class Bitmap < Hash
   end
 
   def all
-    Value.new(values.inject {|a, b|
+    Value.new(self, values.inject {|a, b|
       a | b
     }, keys)
   end
