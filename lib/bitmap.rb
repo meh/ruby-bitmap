@@ -33,11 +33,15 @@ class Bitmap < Hash
     end
 
     def + (*what)
-      bitmap[*(@names + what.flatten.compact)]
+      bitmap[*(@names + what.flatten.map {|piece|
+        piece.to_a rescue piece
+      }).flatten.compact]
     end
 
     def - (*what)
-      bitmap[*(@names - what.flatten.compact)]
+      bitmap[*(@names - what.flatten.map {|piece|
+        piece.to_a rescue piece
+      }).flatten.compact]
     end
 
     def to_i
