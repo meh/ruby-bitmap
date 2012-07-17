@@ -52,6 +52,10 @@ class Bitmap
 	end
 
 	def initialize (data)
+		if data.first.first.is_a? Integer
+			data = Hash[data.map(&:reverse)]
+		end
+
 		@bits = data
 		@bits.freeze
 	end
